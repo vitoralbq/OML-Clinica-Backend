@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+
 import jakarta.validation.Valid;
 
 
@@ -60,6 +62,17 @@ public class PacienteController {
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Paciente> login(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            Paciente paciente = pacienteService.buscarPorEmail(email);
+            return ResponseEntity.ok().body(paciente);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }
