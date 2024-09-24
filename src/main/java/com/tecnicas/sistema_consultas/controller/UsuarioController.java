@@ -16,12 +16,12 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioService pacienteService;
+    private UsuarioService usuarioService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
         try {
-            Usuario usuario = pacienteService.buscarPorId(id);
+            Usuario usuario = usuarioService.buscarPorId(id);
             return ResponseEntity.ok(usuario);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -30,14 +30,14 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> cadastrarUsuario(@Valid @RequestBody Usuario usuario) {
-        Usuario novoUsuario = pacienteService.cadastrarUsuario(usuario);
+        Usuario novoUsuario = usuarioService.cadastrarUsuario(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
         try {
-            Usuario usuario = pacienteService.atualizarUsuario(id, usuarioAtualizado);
+            Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
             return ResponseEntity.ok(usuario);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -47,7 +47,7 @@ public class UsuarioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarUsuario(@PathVariable Long id) {
         try {
-            pacienteService.deletarUsuario(id);
+            usuarioService.deletarUsuario(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
