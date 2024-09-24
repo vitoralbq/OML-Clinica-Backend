@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -55,14 +56,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Long> login(@RequestParam String email) {
+    public ResponseEntity<Usuario> login(@RequestBody Map<String, String> request) {
         try {
+            String email = request.get("email");
             Usuario usuario = usuarioService.buscarPorEmail(email);
-            return ResponseEntity.ok(usuario.getId());
+            return ResponseEntity.ok().body(usuario);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
-
-
 }
