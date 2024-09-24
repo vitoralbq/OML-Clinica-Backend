@@ -17,6 +17,11 @@ public class UsuarioService {
                 .orElseThrow(() -> new UsuarioNotFoundException("Usuario com ID " + id + " não encontrado"));
     }
 
+    public Usuario buscarPorEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new UsuarioNotFoundException("Usuario com email " + email + " não encontrado"));
+    }
+
     public Usuario cadastrarUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
