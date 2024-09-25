@@ -47,4 +47,13 @@ public class ConsultaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping
+    public ResponseEntity<List<Consulta>> listarConsultasPorMedico(@RequestParam Long medicoId, @RequestParam String data) {
+        List<Consulta> consultas = consultaService.listarConsultasPorMedicoEDia(medicoId, data);
+        if (consultas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(consultas);
+    }
 }

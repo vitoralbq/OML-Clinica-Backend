@@ -1,11 +1,10 @@
 package com.tecnicas.sistema_consultas.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
-
-
-    @Entity
+@Entity
     public class Consulta {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +17,8 @@ import java.time.LocalDateTime;
         private Medico medico;
 
         private LocalDateTime dataHora;
+
+        private String horario;
         private String status;
 
         public Long getId() {
@@ -50,6 +51,11 @@ import java.time.LocalDateTime;
 
         public void setDataHora(LocalDateTime dataHora) {
             this.dataHora = dataHora;
+            this.horario = dataHora.format(DateTimeFormatter.ofPattern("HH:mm"));
+        }
+
+        public String getHorario() {
+            return horario;
         }
 
         public String getStatus() {
