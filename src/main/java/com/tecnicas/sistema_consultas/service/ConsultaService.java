@@ -33,6 +33,10 @@ public class ConsultaService {
         return consultaRepository.save(consulta);
     }
 
+    public List<Consulta> listarTodas() {
+        return consultaRepository.findAll();
+    }
+
     public List<Consulta> listarConsultasPorPaciente(Long pacienteId) {
         Optional<Paciente> pacienteOptional = pacienteRepository.findById(pacienteId);
         if (!pacienteOptional.isPresent()) {

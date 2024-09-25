@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -25,6 +26,15 @@ public class ConsultaController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Consulta>> listarTodas() {
+        List<Consulta> consultas = consultaService.listarTodas();
+        if (consultas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(consultas);
     }
 
 
@@ -48,8 +58,8 @@ public class ConsultaController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<Consulta>> listarConsultasPorMedico(@RequestParam Long medicoId, @RequestParam String data) {
+    @GetMapping("/medicoDia")
+    public ResponseEntity<List<Consulta>> listarConsultasPorMedicoeDia(@RequestParam Long medicoId, @RequestParam String data) {
         List<Consulta> consultas = consultaService.listarConsultasPorMedicoEDia(medicoId, data);
         if (consultas.isEmpty()) {
             return ResponseEntity.noContent().build();
