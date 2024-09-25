@@ -56,13 +56,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Usuario> login(@RequestBody Map<String, String> request) {
+    public ResponseEntity<Object> login(@RequestBody Map<String, String> request) {
         try {
             String email = request.get("email");
             Usuario usuario = usuarioService.buscarPorEmail(email);
             return ResponseEntity.ok().body(usuario);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Usuário não encontrado com o email fornecido"));
         }
     }
 }
