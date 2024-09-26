@@ -49,4 +49,9 @@ public class PacienteService {
         Paciente pacienteExistente = buscarPorId(id);
         pacienteRepository.delete(pacienteExistente);
     }
+
+    public Paciente buscarPorEmail(String email) {
+        return pacienteRepository.findByEmail(email)
+                .orElseThrow(() -> new PacienteNotFoundException("Paciente com email " + email + " não encontrado"));
+    }
 }
