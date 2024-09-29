@@ -44,7 +44,7 @@ public class ConsultaService {
         }
 
 
-        return consultaRepository.findAll();
+        return consultaRepository.findByPacienteId(pacienteId);
     }
 
     public void cancelarConsulta(Long id) {

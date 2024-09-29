@@ -19,6 +19,12 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @GetMapping
+    public ResponseEntity<List<Usuario>> buscarTodos() {
+        List<Usuario> usuarios = usuarioService.buscarTodos();
+        return ResponseEntity.ok(usuarios);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> buscarPorId(@PathVariable Long id) {
         try {
@@ -36,10 +42,25 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
+    public ResponseEntity<Usuario> atualizarUsuario(@PathVariable Long id, @RequestBody Usuario usuarioAtualizado) {
         try {
-            Usuario usuario = usuarioService.atualizarUsuario(id, usuarioAtualizado);
-            return ResponseEntity.ok(usuario);
+            Usuario usuarioExistente = usuarioService.buscarPorId(id);
+
+            if (usuarioExistente.getNome() != null) {
+                usuarioExistente.setNome(usuarioAtualizado.getNome());
+            }
+
+            if (usuarioExistente.getEmail() != null) {
+                usuarioExistente.setEmail(usuarioAtualizado.getEmail());
+            }
+
+            if (usuarioExistente.getCargo() != null) {
+                usuarioExistente.setCargo(usuarioAtualizado.getCargo());
+            }
+
+            Usuario usuarioAtualizadoFinal = usuarioService.atualizarUsuario(id, usuarioExistente);
+
+            return ResponseEntity.ok(usuarioAtualizadoFinal);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

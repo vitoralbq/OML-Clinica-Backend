@@ -33,8 +33,27 @@ public class MedicoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Medico> atualizarMedico(@PathVariable Long id, @RequestBody Medico medicoAtualizado) {
-        Medico medico = medicoService.atualizarMedico(id, medicoAtualizado);
-        return ResponseEntity.ok(medico);
+        Medico medicoExistente = medicoService.buscarPorId(id);
+
+        if (medicoAtualizado.getNome() != null) {
+            medicoExistente.setNome(medicoAtualizado.getNome());
+        }
+
+        if (medicoAtualizado.getCpf() != null) {
+            medicoExistente.setCpf(medicoAtualizado.getCpf());
+        }
+
+        if (medicoAtualizado.getEmail() != null) {
+            medicoExistente.setEmail(medicoAtualizado.getEmail());
+        }
+
+        if (medicoAtualizado.getEspecialidade() != null) {
+            medicoExistente.setEspecialidade(medicoAtualizado.getEspecialidade());
+        }
+
+        Medico medicoAtualizadoFinal = medicoService.atualizarMedico(id, medicoExistente);
+
+        return ResponseEntity.ok(medicoAtualizadoFinal);
     }
 
     @DeleteMapping("/{id}")

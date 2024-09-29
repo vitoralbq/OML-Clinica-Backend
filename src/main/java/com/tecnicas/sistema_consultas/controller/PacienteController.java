@@ -46,10 +46,30 @@ public class PacienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Paciente> atualizarPaciente(@PathVariable Long id, @Valid @RequestBody Paciente pacienteAtualizado) {
+    public ResponseEntity<Paciente> atualizarPaciente(@PathVariable Long id, @RequestBody Paciente pacienteAtualizado) {
         try {
-            Paciente paciente = pacienteService.atualizarPaciente(id, pacienteAtualizado);
-            return ResponseEntity.ok(paciente);
+            Paciente pacienteExistente = pacienteService.buscarPorId(id);
+
+            if (pacienteAtualizado.getNome() != null) {
+                pacienteExistente.setNome(pacienteAtualizado.getNome());
+            }
+
+            if (pacienteAtualizado.getCpf() != null) {
+                pacienteExistente.setCpf(pacienteAtualizado.getCpf());
+            }
+
+            if (pacienteAtualizado.getEmail() != null) {
+                pacienteExistente.setEmail(pacienteAtualizado.getEmail());
+            }
+
+            if (pacienteAtualizado.getDataNascimento() != null) {
+                pacienteExistente.setDataNascimento(pacienteAtualizado.getDataNascimento());
+            }
+
+            Paciente pacienteAtualizadoFinal = pacienteService.atualizarPaciente(id, pacienteExistente);
+
+            return ResponseEntity.ok(pacienteAtualizadoFinal);
+
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
